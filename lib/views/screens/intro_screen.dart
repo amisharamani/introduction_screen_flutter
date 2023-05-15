@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class intro_screen extends StatefulWidget {
   const intro_screen({Key? key}) : super(key: key);
@@ -44,7 +45,9 @@ class _intro_screenState extends State<intro_screen> {
         ],
         done: Text("Thank you"),
         showNextButton: false,
-        onDone: (){
+        onDone: ()async{
+          SharedPreferences pref= await SharedPreferences.getInstance();
+          pref.setBool("isvalid", true);
           Navigator.of(context).pushNamed("HomePage");
         },
       ),

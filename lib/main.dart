@@ -6,8 +6,11 @@ import 'package:counter_app/views/screens/homepage.dart';
 import 'package:counter_app/views/screens/intro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-void main(){
-
+import 'package:shared_preferences/shared_preferences.dart';
+void main ()async{
+WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences pref =await SharedPreferences.getInstance();
+  bool visited = pref.getBool("isvalid")?? false;
   runApp(
     MultiProvider(providers: [
         ChangeNotifierProvider(create: (context)=>CounterProvider()),
@@ -41,7 +44,7 @@ void main(){
         ),
 
         themeMode: (Provider.of<ThemeProvider>(context).themeMode.isDark)?ThemeMode.dark:ThemeMode.light,
-
+initialRoute: (visited)?'HomePage':'/',
         routes: {
           'HomePage':(context)=>HomePage(),
          '/':(context)=>intro_screen(),
