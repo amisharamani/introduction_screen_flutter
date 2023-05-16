@@ -7,14 +7,18 @@ import 'package:counter_app/views/screens/intro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'models/them_models.dart';
 void main ()async{
 WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences pref =await SharedPreferences.getInstance();
   bool visited = pref.getBool("isvalid")?? false;
-  runApp(
+bool istheme = pref.getBool("isthemdark")?? false;
+
+runApp(
     MultiProvider(providers: [
         ChangeNotifierProvider(create: (context)=>CounterProvider()),
-      ChangeNotifierProvider(create: (context)=>ThemeProvider()),
+      ChangeNotifierProvider(create: (context)=>ThemeProvider(themeMode:ThemeModel(isDark:istheme))),
 
     ],
       builder: (context,_)=>MaterialApp(
@@ -44,7 +48,7 @@ WidgetsFlutterBinding.ensureInitialized();
         ),
 
         themeMode: (Provider.of<ThemeProvider>(context).themeMode.isDark)?ThemeMode.dark:ThemeMode.light,
-initialRoute: (visited)?'HomePage':'/',
+        initialRoute: (visited)?'HomePage':'/',
         routes: {
           'HomePage':(context)=>HomePage(),
          '/':(context)=>intro_screen(),
